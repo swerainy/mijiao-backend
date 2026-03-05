@@ -40,6 +40,20 @@ app.post('/uploadSequence', (req, res) => {
     });
 });
 
+// 让前端获取分析好的规律
+app.get('/getRules', (req, res) => {
+    const rulesFile = path.join(__dirname, 'rules.json');
+    
+    // 检查规律文件存不存在
+    if (fs.existsSync(rulesFile)) {
+        const rulesData = fs.readFileSync(rulesFile, 'utf-8');
+        res.json({ success: true, rules: JSON.parse(rulesData) });
+    } else {
+        // 如果还没生成过，就返回空对象
+        res.json({ success: true, rules: {} });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`服务器已启动，正在监听端口 ${PORT}...`);
 });
